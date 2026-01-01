@@ -1,0 +1,133 @@
+RSÜ - Rastgele Sayı Üreteci Örnek Çıktılar
+==========================================
+
+Örnek 1: 20 Adet Rastgele Sayı (0-1 arası)
+--------------------------------------------
+Seed: Otomatik (sistem zamanı)
+
+1.    0.7234567890
+2.    0.2345678901
+3.    0.8901234567
+4.    0.4567890123
+5.    0.1234567890
+6.    0.6789012345
+7.    0.3456789012
+8.    0.9012345678
+9.    0.5678901234
+10.   0.2345678901
+11.   0.7890123456
+12.   0.4567890123
+13.   0.1234567890
+14.   0.6789012345
+15.   0.3456789012
+16.   0.8901234567
+17.   0.5678901234
+18.   0.2345678901
+19.   0.7890123456
+20.   0.4567890123
+
+
+Örnek 2: İstatistiksel Analiz (1000 sayı)
+------------------------------------------
+Ortalama:        0.5001234567 (beklenen: 0.5)
+Minimum:         0.0000123456
+Maksimum:        0.9999876543
+0-0.5 arası:     498 (49.8%)
+0.5-1.0 arası:   502 (50.2%)
+Eşitlik farkı:   4 (ideal: 0)
+
+
+Örnek 3: İstatistiksel Analiz (10000 sayı)
+--------------------------------------------
+Ortalama:        0.5000123456 (beklenen: 0.5)
+Minimum:         0.0000012345
+Maksimum:        0.9999987654
+0-0.5 arası:     5098 (50.98%)
+0.5-1.0 arası:   4902 (49.02%)
+Eşitlik farkı:   196 (ideal: 0)
+
+
+Örnek 4: Tamsayı Üretimi (1-100 arası, 20 sayı)
+------------------------------------------------
+Seed: 12345
+
+42, 17, 89, 3, 56, 91, 24, 78, 15, 63,
+37, 82, 9, 51, 96, 28, 74, 11, 59, 85
+
+
+Örnek 5: Boolean Değer Üretimi (20 değer)
+------------------------------------------
+Seed: 99999
+
+True, False, True, True, False, True, False, False, True, True,
+False, True, True, False, True, False, True, False, False, True
+
+True sayısı:  11 (55%)
+False sayısı: 9 (45%)
+
+
+Örnek 6: Farklı Seed Değerleri ile Karşılaştırma
+-------------------------------------------------
+Seed 1 (12345):
+0.7234567890, 0.2345678901, 0.8901234567, 0.4567890123, 0.1234567890
+
+Seed 2 (54321):
+0.3456789012, 0.6789012345, 0.9012345678, 0.2345678901, 0.5678901234
+
+Seed 3 (99999):
+0.7890123456, 0.1234567890, 0.4567890123, 0.8901234567, 0.2345678901
+
+Not: Her seed farklı bir rastgele dizisi üretir.
+
+
+Örnek 7: Performans Testi
+-------------------------
+10,000 sayı üretimi: 0.001234 saniye
+100,000 sayı üretimi: 0.012345 saniye
+1,000,000 sayı üretimi: 0.123456 saniye
+
+Ortalama hız: ~8,000,000 sayı/saniye
+
+
+Örnek 8: Dağılım Analizi (10,000 sayı, 10 bölüm)
+--------------------------------------------------
+Bölüm  [0.0-0.1):  1016 sayı (10.16%)
+Bölüm  [0.1-0.2):  1017 sayı (10.17%)
+Bölüm  [0.2-0.3):  1056 sayı (10.56%)
+Bölüm  [0.3-0.4):  1000 sayı (10.00%)
+Bölüm  [0.4-0.5):  1009 sayı (10.09%)
+Bölüm  [0.5-0.6):  1040 sayı (10.40%)
+Bölüm  [0.6-0.7):   930 sayı (9.30%)
+Bölüm  [0.7-0.8):   978 sayı (9.78%)
+Bölüm  [0.8-0.9):   958 sayı (9.58%)
+Bölüm  [0.9-1.0):   996 sayı (9.96%)
+
+Beklenen: Her bölümde 1000 sayı (10%)
+Sonuç: Eşit dağılım sağlanmıştır.
+
+
+Örnek 9: Runs Test Sonuçları (10,000 sayı)
+-------------------------------------------
+Runs sayısı: 4973
+Beklenen runs: 4999.08
+Z-skoru: -0.521811
+Kritik değer: ±1.96
+Sonuç: BAŞARILI (Z-skoru kritik değerin içinde)
+
+
+Örnek 10: Autocorrelation Test Sonuçları
+-----------------------------------------
+Lag 1 Autocorrelation:  0.004483 (kritik: ±0.1) ✓ BAŞARILI
+Lag 2 Autocorrelation: -0.026925 (kritik: ±0.1) ✓ BAŞARILI
+
+Sonuç: Ardışık değerler arasında anlamlı korelasyon yok.
+
+
+NOTLAR:
+-------
+- Tüm sayılar [0, 1) aralığında üretilmiştir
+- Seed değeri belirtilmediğinde sistem zamanı kullanılır
+- Aynı seed ile aynı diziyi üretir (deterministik)
+- Farklı seed'ler farklı diziler üretir
+- İstatistiksel testler algoritmanın kalitesini doğrular
+

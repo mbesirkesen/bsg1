@@ -1,0 +1,62 @@
+RSÜ İSTATİSTİKSEL TEST SONUÇLARI
+======================================================================
+Örnek Boyutu: 10000
+Toplam Test: 6
+Başarılı: 5
+Başarısız: 1
+======================================================================
+
+Test: Chi-Square Test
+----------------------------------------------------------------------
+  chi_square: 12.526000
+  degrees_of_freedom: 9
+  critical_value: 16.920000
+  passed: True
+  observed_frequencies: [1016, 1017, 1056, 1000, 1009, 1040, 930, 978, 958, 996]
+  expected_frequency: 1000.000000
+  Sonuç: BAŞARILI
+
+Test: Runs Test
+----------------------------------------------------------------------
+  runs: 4973
+  expected_runs: 4999.079200
+  z_score: -0.521811
+  critical_value: 1.960000
+  passed: True
+  n1: 4902
+  n2: 5098
+  Sonuç: BAŞARILI
+
+Test: Frequency Test (0-1 Equality)
+----------------------------------------------------------------------
+  low_range_count: 5098
+  high_range_count: 4902
+  expected: 5000.000000
+  difference: 196
+  percent_difference: 1.960000
+  passed: True
+  Sonuç: BAŞARILI
+
+Test: Kolmogorov-Smirnov Test
+----------------------------------------------------------------------
+  d_statistic: 0.014353
+  d_plus: 0.014353
+  d_minus: 0.003648
+  critical_value: 0.013600
+  passed: False
+  Sonuç: BAŞARISIZ
+
+Test: Autocorrelation Test (lag=1)
+----------------------------------------------------------------------
+  autocorrelation: 0.004483
+  critical_value: 0.100000
+  passed: True
+  Sonuç: BAŞARILI
+
+Test: Autocorrelation Test (lag=2)
+----------------------------------------------------------------------
+  autocorrelation: -0.026925
+  critical_value: 0.100000
+  passed: True
+  Sonuç: BAŞARILI
+

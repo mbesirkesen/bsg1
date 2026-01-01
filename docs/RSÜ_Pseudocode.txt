@@ -1,0 +1,121 @@
+RSÜ (Rastgele Sayı Üreteci) - Sözde Kod (Pseudocode)
+=====================================================
+
+ALGORITMA: XORShift Tabanlı Rastgele Sayı Üretimi
+==================================================
+
+BAŞLA
+
+    // Seed değerini al veya otomatik oluştur
+    EĞER seed verilmemişse:
+        seed = (sistem_zamanı * 1000000) XOR (process_id << 16)
+        seed = seed AND 0xFFFFFFFFFFFFFFFF  // 64-bit maskele
+    
+    // State dizisini başlat (4 adet 32-bit değer)
+    state[0] = seed AND 0xFFFFFFFF
+    state[1] = (seed >> 32) AND 0xFFFFFFFF
+    state[2] = (seed * 1103515245 + 12345) AND 0xFFFFFFFF
+    state[3] = (seed * 1664525 + 1013904223) AND 0xFFFFFFFF
+    
+    // Warm-up: İlk değerleri karıştır
+    i = 1'den 10'a kadar:
+        _next() fonksiyonunu çağır
+    
+    // Rastgele sayı üretme döngüsü
+    i = 1'den N'e kadar:
+        rastgele_sayi = next_float()
+        rastgele_sayiyi_yazdır
+    
+BİTİR
+
+
+FONKSIYON: _next() - İç Rastgele Sayı Üretimi
+===============================================
+
+BAŞLA
+    // State değerlerini al
+    s1 = state[0]
+    s0 = state[1]
+    
+    // XORShift işlemleri (State 0 ve 1)
+    state[0] = s0
+    s1 = s1 XOR (s1 << 23) AND 0xFFFFFFFF
+    s1 = s1 XOR (s1 >> 17)
+    s1 = s1 XOR s0
+    s1 = s1 XOR (s0 >> 26) AND 0xFFFFFFFF
+    state[1] = s1
+    
+    // XORShift işlemleri (State 2 ve 3)
+    s2 = state[2]
+    s3 = state[3]
+    state[2] = s3
+    s2 = s2 XOR (s2 << 19) AND 0xFFFFFFFF
+    s2 = s2 XOR (s2 >> 13)
+    s2 = s2 XOR s3
+    s2 = s2 XOR (s3 >> 5) AND 0xFFFFFFFF
+    state[3] = s2
+    
+    // İki state'i birleştir
+    sonuç = (s1 + s0) AND 0xFFFFFFFF
+    
+    SONUÇ DÖNDÜR (sonuç)
+BİTİR
+
+
+FONKSIYON: next_float() - [0, 1) Aralığında Sayı Üretimi
+=========================================================
+
+BAŞLA
+    tamsayi = _next()
+    ondalik = tamsayi / (2^32)
+    SONUÇ DÖNDÜR (ondalik)
+BİTİR
+
+
+FONKSIYON: next_int(min, max) - Aralıkta Tamsayı Üretimi
+==========================================================
+
+BAŞLA
+    EĞER max verilmemişse:
+        SONUÇ DÖNDÜR (_next())
+    
+    range_size = max - min
+    EĞER range_size <= 0 ise:
+        SONUÇ DÖNDÜR (min)
+    
+    max_acceptable = (0xFFFFFFFF / range_size) * range_size
+    
+    DÖNGÜ (Sonsuz):
+        value = _next()
+        EĞER value < max_acceptable ise:
+            SONUÇ DÖNDÜR (min + (value MOD range_size))
+    DÖNGÜ SONU
+BİTİR
+
+
+ALGORITMA ÖZELLİKLERİ:
+======================
+
+1. XORShift İşlemleri:
+   - XOR (exclusive OR) ve bit kaydırma işlemleri kullanır
+   - Hızlı ve verimli
+   - İyi rastgelelik özellikleri
+
+2. Çoklu State:
+   - 4 adet 32-bit state değeri
+   - Her state bağımsız olarak güncellenir
+   - Daha uzun periyot sağlar
+
+3. Warm-up:
+   - İlk 10 değer warm-up için kullanılır
+   - State'lerin iyi karışmasını sağlar
+
+4. Modulo Bias Önleme:
+   - Rejection sampling kullanılır
+   - Eşit dağılım garantisi
+
+5. Rastgelelik Kaynakları:
+   - Sistem zamanı
+   - Process ID
+   - XORShift algoritması
+

@@ -1,0 +1,224 @@
+RSÜ (Rastgele Sayı Üreteci) - Akış Şeması
+===========================================
+
+[BAŞLA]
+    |
+    v
+[Seed Değeri Al]
+    |
+    |---> Seed verildi mi?
+    |         |
+    |         |---> HAYIR --> [Sistem Zamanı ve PID'den Seed Oluştur]
+    |         |                    |
+    |         |                    v
+    |         |---> EVET --> [Seed'i Kullan]
+    |         |
+    |         v
+    |    [Seed'i 4 Parçaya Böl]
+    |         |
+    |         v
+    |    state[0] = seed & 0xFFFFFFFF
+    |    state[1] = (seed >> 32) & 0xFFFFFFFF
+    |    state[2] = (seed * 1103515245 + 12345) & 0xFFFFFFFF
+    |    state[3] = (seed * 1664525 + 1013904223) & 0xFFFFFFFF
+    |         |
+    |         v
+    |    [Warm-up: 10 Kez _next() Çağır]
+    |         |
+    |         v
+    |    [Sayı Adedi (N) Al]
+    |         |
+    |         v
+    |    i = 0
+    |         |
+    |         v
+    |    ┌─────────────────┐
+    |    | i < N?          |
+    |    └─────────────────┘
+    |         |
+    |         |---> HAYIR --> [BİTİR]
+    |         |
+    |         |---> EVET
+    |              |
+    |              v
+    |         [next_float() Çağır]
+    |              |
+    |              v
+    |         ┌─────────────────────┐
+    |         | _next() Fonksiyonu  |
+    |         └─────────────────────┘
+    |              |
+    |              v
+    |         [State 0 ve 1'i Güncelle]
+    |              |
+    |              |--> s1 = state[0]
+    |              |--> s0 = state[1]
+    |              |--> state[0] = s0
+    |              |--> s1 = s1 XOR (s1 << 23)
+    |              |--> s1 = s1 XOR (s1 >> 17)
+    |              |--> s1 = s1 XOR s0
+    |              |--> s1 = s1 XOR (s0 >> 26)
+    |              |--> state[1] = s1
+    |              |
+    |              v
+    |         [State 2 ve 3'ü Güncelle]
+    |              |
+    |              |--> s2 = state[2]
+    |              |--> s3 = state[3]
+    |              |--> state[2] = s3
+    |              |--> s2 = s2 XOR (s2 << 19)
+    |              |--> s2 = s2 XOR (s2 >> 13)
+    |              |--> s2 = s2 XOR s3
+    |              |--> s2 = s2 XOR (s3 >> 5)
+    |              |--> state[3] = s2
+    |              |
+    |              v
+    |         [Sonuç = (s1 + s0) & 0xFFFFFFFF]
+    |              |
+    |              v
+    |         [Sonuç / (2^32) --> Ondalık Sayı]
+    |              |
+    |              v
+    |         [Sayıyı Yazdır]
+    |              |
+    |              v
+    |         i = i + 1
+    |              |
+    |              └───┐
+    |                  |
+    └──────────────────┘
+
+
+_next() Fonksiyonu Detaylı Akış:
+=================================
+
+[FONKSIYON: _next()]
+    |
+    v
+[State Değerlerini Al]
+    |
+    |--> s1 = state[0]
+    |--> s0 = state[1]
+    |
+    v
+[XORShift İşlemleri - State 0,1]
+    |
+    |--> state[0] = s0
+    |--> s1 = s1 XOR (s1 << 23)
+    |--> s1 = s1 XOR (s1 >> 17)
+    |--> s1 = s1 XOR s0
+    |--> s1 = s1 XOR (s0 >> 26)
+    |--> state[1] = s1
+    |
+    v
+[State Değerlerini Al - State 2,3]
+    |
+    |--> s2 = state[2]
+    |--> s3 = state[3]
+    |
+    v
+[XORShift İşlemleri - State 2,3]
+    |
+    |--> state[2] = s3
+    |--> s2 = s2 XOR (s2 << 19)
+    |--> s2 = s2 XOR (s2 >> 13)
+    |--> s2 = s2 XOR s3
+    |--> s2 = s2 XOR (s3 >> 5)
+    |--> state[3] = s2
+    |
+    v
+[Sonuç Hesapla]
+    |
+    |--> result = (s1 + s0) & 0xFFFFFFFF
+    |
+    v
+[Sonuç Döndür]
+
+
+next_int(min, max) Fonksiyonu Akış:
+===================================
+
+[FONKSIYON: next_int(min, max)]
+    |
+    v
+[max verildi mi?]
+    |
+    |---> HAYIR --> [_next() Döndür]
+    |                  |
+    |                  v
+    |              [FONKSIYON SONU]
+    |
+    |---> EVET
+         |
+         v
+    [range_size = max - min]
+         |
+         v
+    [range_size <= 0?]
+         |
+         |---> EVET --> [min Döndür]
+         |                |
+         |                v
+         |            [FONKSIYON SONU]
+         |
+         |---> HAYIR
+              |
+              v
+         [max_acceptable = (0xFFFFFFFF / range_size) * range_size]
+              |
+              v
+         ┌────────────────────┐
+         │ DÖNGÜ (Sonsuz)     │
+         └────────────────────┘
+              |
+              v
+         [value = _next()]
+              |
+              v
+         [value < max_acceptable?]
+              |
+              |---> HAYIR --> [Döngüye Devam]
+              |                  |
+              |                  └───┐
+              |                      |
+              |---> EVET              |
+                   |                  |
+                   v                  |
+              [min + (value % range_size) Döndür]
+                   |
+                   v
+              [FONKSIYON SONU]
+
+
+İstatistiksel Test Akışı:
+==========================
+
+[BAŞLA]
+    |
+    v
+[N Adet Rastgele Sayı Üret]
+    |
+    v
+[Ki-Kare Testi Çalıştır]
+    |
+    v
+[Runs Testi Çalıştır]
+    |
+    v
+[Frequency Testi Çalıştır]
+    |
+    v
+[Kolmogorov-Smirnov Testi Çalıştır]
+    |
+    v
+[Autocorrelation Testi Çalıştır]
+    |
+    v
+[Tüm Test Sonuçlarını Raporla]
+    |
+    v
+[Sonuçları Dosyaya Kaydet]
+    |
+    v
+[BİTİR]
+
