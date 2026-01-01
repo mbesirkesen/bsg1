@@ -20,6 +20,9 @@ wheels/
 .installed.cfg
 *.egg
 
+# Test results (regenerated on each run)
+test_results.txt
+
 # Virtual Environment
 venv/
 ENV/
