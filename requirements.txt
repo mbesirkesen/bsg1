@@ -1,0 +1,14 @@
+# CDSNG - Cubic Congruential Number Generator
+# Python Gereksinimleri
+
+# Bu proje Python standart kütüphanesi kullanır
+# Harici bağımlılık gerektirmez
+
+# Minimum Python versiyonu
+# Python >= 3.6
+
+# Opsiyonel: Geliştirme için kullanılabilecek paketler
+# pytest>=7.0.0  # Test için
+# black>=22.0.0  # Kod formatı için
+# flake8>=5.0.0  # Linting için
+
