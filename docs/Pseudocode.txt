@@ -1,0 +1,20 @@
+Başla
+
+Kullanıcıdan SEED değerini al
+Kullanıcıdan üretilecek sayı adedini (N) al
+
+a = 5
+b = 17
+c = 41
+d = 13
+m = 2^31
+
+X = SEED
+i = 1
+
+i = 1'den N'e kadar döngü:
+    X = (a * X^3 + b * X^2 + c * X + d) mod m
+    X değerini ekrana yazdır
+Döngü sonu
+
+Bitir
